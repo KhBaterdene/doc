@@ -422,4 +422,388 @@ query PoscProductSimilarities($id: String!, $groupedSimilarity: String) {
 }
 ```
 
+sort products:
 
+```jsx
+products.sort((a: IProduct, b: IProduct) => a.unitPrice - b.unitPrice);
+```
+
+Example: https://github.com/erxes/erxes/blob/master/pos/modules/products/components/ChooseFromSimilarities.tsx
+
+# Orders
+
+### Orders
+
+query:
+
+```gql
+query Query(
+  $searchValue: String
+  $statuses: [String]
+  $customerId: String
+  $customerType: String
+  $startDate: Date
+  $endDate: Date
+  $dateType: String
+  $isPaid: Boolean
+  $dueStartDate: Date
+  $dueEndDate: Date
+  $isPreExclude: Boolean
+  $slotCode: String
+  $page: Int
+  $perPage: Int
+  $sortField: String
+  $sortDirection: Int
+) {
+  fullOrders(
+    searchValue: $searchValue
+    statuses: $statuses
+    customerId: $customerId
+    customerType: $customerType
+    startDate: $startDate
+    endDate: $endDate
+    dateType: $dateType
+    isPaid: $isPaid
+    dueStartDate: $dueStartDate
+    dueEndDate: $dueEndDate
+    isPreExclude: $isPreExclude
+    slotCode: $slotCode
+    page: $page
+    perPage: $perPage
+    sortField: $sortField
+    sortDirection: $sortDirection
+  ) {
+    _id
+    createdAt
+    status
+    customerId
+    number
+    cashAmount
+    mobileAmount
+    billType
+    registerNumber
+    paidAmounts {
+      _id
+      type
+      amount
+      info
+    }
+    paidDate
+    dueDate
+    modifiedAt
+    totalAmount
+    finalAmount
+    shouldPrintEbarimt
+    printedEbarimt
+    billId
+    oldBillId
+    type
+    branchId
+    deliveryInfo
+    description
+    isPre
+    origin
+    customer {
+      _id
+      code
+      primaryPhone
+      primaryEmail
+      firstName
+      lastName
+      primaryAddress
+      addresses
+    }
+    customerType
+    items {
+      _id
+      createdAt
+      productId
+      categoryId
+      count
+      orderId
+      unitPrice
+      discountAmount
+      discountPercent
+      bonusCount
+      productName
+      isPackage
+      isTake
+      productImgUrl
+      status
+      manufacturedDate
+      description
+      attachment
+    }
+    user {
+      _id
+      createdAt
+      username
+      firstName
+      lastName
+      primaryPhone
+      primaryEmail
+      email
+      isActive
+      isOwner
+      details {
+        avatar
+        fullName
+        shortName
+        birthDate
+        position
+        workStartedDate
+        location
+        description
+        operatorPhone
+      }
+    }
+    putResponses {
+      createdAt
+      date
+      contentType
+      contentId
+      amount
+      billType
+      cashAmount
+      nonCashAmount
+      customerNo
+      cityTax
+      vat
+      taxType
+      registerNo
+      billId
+      macAddress
+      lottery
+      qrData
+      success
+      customerName
+      modifiedAt
+      sendInfo
+      internalCode
+      lotteryWarningMsg
+      errorCode
+      message
+      getInformation
+      returnBillId
+      stocks
+    }
+    returnInfo
+    slotCode
+  }
+}
+```
+
+simplified for ecommerce:
+
+```gql
+query Query(
+  $searchValue: String
+  $statuses: [String]
+  $customerId: String
+  $isPaid: Boolean
+  $perPage: Int
+  $sortField: String
+  $sortDirection: Int
+  $page: Int
+) {
+  fullOrders(
+    searchValue: $searchValue
+    statuses: $statuses
+    customerId: $customerId
+    isPaid: $isPaid
+    perPage: $perPage
+    sortField: $sortField
+    sortDirection: $sortDirection
+    page: $page
+  ) {
+    _id
+    createdAt
+    status
+    customerId
+    number
+    mobileAmount
+    billType
+    registerNumber
+    paidDate
+    dueDate
+    modifiedAt
+    totalAmount
+    printedEbarimt
+    type
+    branchId
+    deliveryInfo
+    description
+    origin
+    items {
+      _id
+      createdAt
+      productId
+      categoryId
+      count
+      orderId
+      unitPrice
+      discountAmount
+      discountPercent
+      bonusCount
+      productName
+      isPackage
+      isTake
+      productImgUrl
+      status
+      manufacturedDate
+      description
+      attachment
+    }
+    putResponses {
+      createdAt
+      amount
+      billType
+      cashAmount
+      cityTax
+      registerNo
+      billId
+      lottery
+      qrData
+      success
+      modifiedAt
+      lotteryWarningMsg
+      errorCode
+      message
+      stocks
+    }
+  }
+}
+```
+
+Examples:
+
+get current order: https://github.com/pages-web/techstore/blob/main/src/modules/checkout/currentOrder.tsx
+
+get orders: https://github.com/pages-web/techstore/blob/main/src/pages/profile/orders/index.tsx
+
+### Order Detail
+
+```gql
+query OrderDetail($id: String, $customerId: String) {
+  orderDetail(_id: $id, customerId: $customerId) {
+    _id
+    createdAt
+    status
+    customerId
+    number
+    cashAmount
+    mobileAmount
+    billType
+    registerNumber
+    paidAmounts {
+      _id
+      type
+      amount
+      info
+    }
+    paidDate
+    dueDate
+    modifiedAt
+    totalAmount
+    finalAmount
+    shouldPrintEbarimt
+    printedEbarimt
+    billId
+    oldBillId
+    type
+    branchId
+    deliveryInfo
+    description
+    isPre
+    origin
+    customer {
+      _id
+      code
+      primaryPhone
+      primaryEmail
+      firstName
+      lastName
+      primaryAddress
+      addresses
+    }
+    customerType
+    items {
+      _id
+      createdAt
+      productId
+      categoryId
+      count
+      orderId
+      unitPrice
+      discountAmount
+      discountPercent
+      bonusCount
+      productName
+      isPackage
+      isTake
+      productImgUrl
+      status
+      manufacturedDate
+      description
+      attachment
+    }
+    user {
+      _id
+      createdAt
+      username
+      firstName
+      lastName
+      primaryPhone
+      primaryEmail
+      email
+      isActive
+      isOwner
+      details {
+        avatar
+        fullName
+        shortName
+        birthDate
+        position
+        workStartedDate
+        location
+        description
+        operatorPhone
+      }
+    }
+    putResponses {
+      createdAt
+      date
+      contentType
+      contentId
+      amount
+      billType
+      cashAmount
+      nonCashAmount
+      customerNo
+      cityTax
+      vat
+      taxType
+      registerNo
+      billId
+      macAddress
+      lottery
+      qrData
+      success
+      customerName
+      modifiedAt
+      sendInfo
+      internalCode
+      lotteryWarningMsg
+      errorCode
+      message
+      getInformation
+      returnBillId
+      stocks
+    }
+    returnInfo
+    slotCode
+    deal
+    dealLink
+  }
+}
+```
