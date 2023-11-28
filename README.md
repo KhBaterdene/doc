@@ -807,3 +807,186 @@ query OrderDetail($id: String, $customerId: String) {
   }
 }
 ```
+
+### OrderAdd
+
+query:
+
+```gql
+mutation OrdersAdd(
+  $items: [OrderItemInput]
+  $totalAmount: Float
+  $type: String
+  $branchId: String
+  $customerId: String
+  $customerType: String
+  $deliveryInfo: JSON
+  $billType: String
+  $registerNumber: String
+  $slotCode: String
+  $origin: String
+  $dueDate: Date
+  $status: String
+  $buttonType: String
+  $description: String
+  $isPre: Boolean
+) {
+  ordersAdd(
+    items: $items
+    totalAmount: $totalAmount
+    type: $type
+    branchId: $branchId
+    customerId: $customerId
+    customerType: $customerType
+    deliveryInfo: $deliveryInfo
+    billType: $billType
+    registerNumber: $registerNumber
+    slotCode: $slotCode
+    origin: $origin
+    dueDate: $dueDate
+    status: $status
+    buttonType: $buttonType
+    description: $description
+    isPre: $isPre
+  ) {
+    _id
+  }
+}
+```
+
+Query parameters:
+
+|                  |                                                                        |
+| ---------------- | ---------------------------------------------------------------------- |
+| `type`           | `eat`, `take`, `delivery`                                              |
+| `billType`       | И баримт авах төрөл: хувь хүн - `1`, байгуулга - `3`,                  |
+| `registerNumber` | регистерийн дугаар `0000000`, `AA00000000`                             |
+| `description`    | хаяг байршилын мэдээлэл нийлүүлж оруулах эсвэл кассчин тэмдэглэл бичих |
+| `dueDate`        | Хүлээлгэж өгөх өдөр                                                    |
+
+### OrdersEdit
+
+query:
+
+```gql
+mutation OrdersEdit(
+  $id: String!
+  $items: [OrderItemInput]
+  $totalAmount: Float
+  $type: String
+  $branchId: String
+  $customerId: String
+  $customerType: String
+  $deliveryInfo: JSON
+  $billType: String
+  $registerNumber: String
+  $slotCode: String
+  $origin: String
+  $dueDate: Date
+  $status: String
+  $buttonType: String
+  $description: String
+  $isPre: Boolean
+) {
+  ordersEdit(
+    _id: $id
+    items: $items
+    totalAmount: $totalAmount
+    type: $type
+    branchId: $branchId
+    customerId: $customerId
+    customerType: $customerType
+    deliveryInfo: $deliveryInfo
+    billType: $billType
+    registerNumber: $registerNumber
+    slotCode: $slotCode
+    origin: $origin
+    dueDate: $dueDate
+    status: $status
+    buttonType: $buttonType
+    description: $description
+    isPre: $isPre
+  ) {
+    _id
+  }
+}
+```
+
+args:
+
+```json
+{
+  "id": null,
+  "items": [
+    {
+      "_id": null,
+      "attachment": null,
+      "count": null,
+      "description": null,
+      "isPackage": null,
+      "isTake": null,
+      "manufacturedDate": null,
+      "productId": null,
+      "status": null,
+      "unitPrice": null
+    }
+  ],
+  "totalAmount": null,
+  "type": null,
+  "branchId": null,
+  "customerId": null,
+  "customerType": null,
+  "deliveryInfo": null,
+  "billType": null,
+  "registerNumber": null,
+  "slotCode": null,
+  "origin": null,
+  "dueDate": null,
+  "status": null,
+  "buttonType": null,
+  "description": null,
+  "isPre": null
+}
+```
+
+# Payment
+
+### ordersAddPayment
+
+query:
+
+```gql
+mutation OrdersAddPayment(
+  $id: String!
+  $cashAmount: Float
+  $mobileAmount: Float
+  $paidAmounts: [PaidAmountInput]
+) {
+  ordersAddPayment(
+    _id: $id
+    cashAmount: $cashAmount
+    mobileAmount: $mobileAmount
+    paidAmounts: $paidAmounts
+  ) {
+    _id
+  }
+}
+```
+
+args:
+
+```json
+{
+  "id": null,
+  "cashAmount": null,
+  "mobileAmount": null,
+  "paidAmounts": [
+    {
+      "_id": null,
+      "amount": null,
+      "info": null,
+      "type": null
+    }
+  ]
+}
+```
